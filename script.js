@@ -32,6 +32,8 @@ var sceneWidth;
 var fontSize;
 leftBtnClick=false;
 rightBtnClick=false;
+upBtnClick=false;
+var score = 0 ;
 
 function init(){
     
@@ -72,14 +74,29 @@ function preload ()
     this.load.image('ground','assets/rock.png');
     this.load.image('chug','assets/chug.png');
     this.load.image('bridge','assets/platform.png');
-    this.load.image('sign','assets/sign_board.png');
+    this.load.image('start','assets/start.png');
     this.load.image('doof','assets/doof.png');
     this.load.image('city','assets/city.png');
     this.load.image('mack','assets/mack.png');
     this.load.image('college','assets/college_cartoon.png');
     this.load.image('left','assets/left_btn.png');
     this.load.image('right','assets/right_btn.png');
+    this.load.image('jump','assets/up_btn.png');
     this.load.image('cloud','assets/cloud.png');
+    this.load.image('about','assets/about.png');
+    this.load.image('school','assets/school.png');
+    this.load.image('tree1','assets/tree1.png');
+    this.load.image('tree2','assets/tree2.png');
+    this.load.image('seniorcollege','assets/college.png');
+    this.load.image('experience','assets/experience.png');
+    this.load.image('skills','assets/skills.png');
+    this.load.image('projects','assets/projects.png');
+    this.load.image('profiles','assets/profiles.png');
+    this.load.image('thankyou','assets/thankyou.png');
+    this.load.image('halfblock','assets/halfblock.png');
+    this.load.image('fullblock','assets/fullblock.png');
+    this.load.image('blackpanther','assets/blackpanther.png');
+    this.load.image('captain','assets/captain.png');
     this.load.spritesheet('kick','assets/kickspr_digital.png',{frameWidth:130, frameHeight:150});
     this.load.spritesheet('bird','assets/birdspr_min.png',{frameWidth:87, frameHeight:68});
     // this.load.audio('theme','assets/kick_theme.ogg');
@@ -89,15 +106,17 @@ function create ()
 {
     
     
+    text.destroy();
     console.log(sceneHeight);
     console.log(sceneWidth);
     /*Button Code -Start*/
     /*Button Code - End*/
 
-    text.destroy();
+    scoreText = this.add.text(20, 20, 'SCORE:0', { fill: '#ffffff', font: '36px' }).setFontStyle('bold');
+    scoreText.setScrollFactor(0)
     console.log('In Create');
     
-    this.cameras.main.setBounds(0, 0, fullWidth+9000, sceneHeight);
+    this.cameras.main.setBounds(0, 0, fullWidth+4000, sceneHeight);
     // this.add.image(0,0,'sky').setOrigin(0,0);
     
     // this.sound.pauseOnBlur = false;
@@ -107,11 +126,23 @@ function create ()
     //Backdrop -Start
     backdrop = this.physics.add.staticGroup();
     backdrop.create(600,sceneHeight-280,'city');
-    backdrop.create(130,sceneHeight-210,'sign');
+    backdrop.create(130,sceneHeight-210,'start');
     backdrop.create(1230,sceneHeight-280,'doof');
-    backdrop.create(2980,sceneHeight-250,'college');
-    backdrop.create(2400,sceneHeight-280,'city');
-    backdrop.create(1800,sceneHeight-188,'mack');
+    
+    backdrop.create(2200,sceneHeight-210,'about');
+    backdrop.create(2500,sceneHeight-200,'school');
+    backdrop.create(2950,sceneHeight-180,'tree1');
+    backdrop.create(2800,sceneHeight-178,'tree2');
+    backdrop.create(3300,sceneHeight-190,'seniorcollege');
+    backdrop.create(3700,sceneHeight-180,'tree1');
+    backdrop.create(4100,sceneHeight-250,'college');
+    backdrop.create(4300,sceneHeight-180,'tree1');
+    backdrop.create(4500,sceneHeight-230,'blackpanther');
+    backdrop.create(4800,sceneHeight-230,'captain');
+    backdrop.create(1850,sceneHeight-188,'mack');
+    // backdrop.create(3200,sceneHeight-210,'about');
+    // backdrop.create(3500,sceneHeight-210,'experience');
+    // backdrop.create(3800,sceneHeight-210,'skills');
     //Backdrop -End
     
     
@@ -135,7 +166,7 @@ function create ()
     // platforms.create(1300, 610,'ground');
     // platforms.create(1900, 610,'ground');
     // platforms.create(2500, 610,'ground');
-    // platforms.create(600, 400, 'bridge');
+    platforms.create(1020, 370, 'halfblock');
     // platforms.create(50, 250, 'bridge');
     // platforms.create(750, 220, 'bridge');
     // platforms.create(1200, 300, 'bridge');
@@ -178,9 +209,9 @@ function create ()
         repeat: -1
     });
 
-    player.body.setGravityY(600);
+    player.body.setGravityY(300);
     this.physics.add.collider(player,platforms);
-    this.physics.world.setBounds(0, 0, fullWidth+10000, sceneHeight-95);
+    this.physics.world.setBounds(0, 0, fullWidth+4000, sceneHeight-95);
     this.cameras.main.startFollow(player, true, 1.0, 1.0);
 
     //Chugs
@@ -200,12 +231,15 @@ function create ()
     
     const helloButton = this.add.text(75, sceneHeight-70, 'Hello,\nPlease use arrow keys to move!', { fill: '#ffffff'}).setFontStyle('bold');
     helloButton.setFontSize(fontSize);
-    leftButton = this.add.image(sceneWidth-120,sceneHeight-50,'left');
+    leftButton = this.add.image(sceneWidth-190,sceneHeight-45,'left');
     leftButton.setScrollFactor(0);
     leftButton.setInteractive();
-    rightButton = this.add.image(sceneWidth-50,sceneHeight-50,'right');
+    rightButton = this.add.image(sceneWidth-50,sceneHeight-45,'right');
     rightButton.setScrollFactor(0);
     rightButton.setInteractive();
+    upButton = this.add.image(sceneWidth-120,sceneHeight-45,'jump');
+    upButton.setScrollFactor(0);
+    upButton.setInteractive();
 }
 
 var scalingFactor = 0;
@@ -221,8 +255,10 @@ function update ()
     flyingbird.anims.play('bluebird',true);
     leftButton.on('pointerdown', () => { leftBtnClick=true; });
     rightButton.on('pointerdown', () => { rightBtnClick=true; });
+    upButton.on('pointerdown', () => { upBtnClick=true; });
     leftButton.on('pointerup', () => { leftBtnClick=false; });
     rightButton.on('pointerup', () => { rightBtnClick=false; });
+    upButton.on('pointerup', () => { upBtnClick=false; });
     cursors = this.input.keyboard.createCursorKeys();
     if (cursors.left.isDown || leftBtnClick==true)
     {
@@ -231,7 +267,7 @@ function update ()
     }
     else if (cursors.right.isDown || rightBtnClick==true)
     {
-        player.setVelocityX(200);
+        player.setVelocityX(800);
         player.anims.play('right', true);
     }
     else
@@ -239,7 +275,7 @@ function update ()
         player.setVelocityX(0);
         player.anims.play('turn');
     }
-    if (cursors.up.isDown && player.body.touching.down)
+    if (cursors.up.isDown && player.body.touching.down || upBtnClick==true)
     {
         player.setVelocityY(-530);
     }
@@ -251,6 +287,8 @@ function update ()
 function collectChugs (player, chug)
 {
     chug.disableBody(true, true);
+    score+=10;
+    scoreText.setText('SCORE:'+ score);
 }
 
 function moveLeft(){
