@@ -3,6 +3,10 @@ var fullHeight=window.innerHeight;
 var midX=fullWidth/2;
 var midY=fullHeight/2;
 var config = {
+    scale : {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     type: Phaser.AUTO,
     width: fullWidth,
     height: fullHeight,
@@ -23,10 +27,15 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
+var sceneHeight;
+var sceneWidth;
+var fontSize;
+var xMid;
+var yMid;
 
 function init(){
     
-
+    
     console.log('In Init');
     var progress = this.add.graphics();
 
@@ -37,7 +46,14 @@ function init(){
         progress.fillRect(0, 270, 800 * value, 60);
 
     });
-    text = this.add.text(midX-350, 270, 'Loading Assets ...', { font: '56px Courier', fill: '#ffffff' });
+    
+    
+    sceneHeight = game.scale.height;
+    sceneWidth = game.scale.width;
+    fontSize = sceneWidth*0.0263;
+    text = this.add.text(sceneWidth/3, 270, 'Loading Assets ...', { fill: '#ffffff' });
+    text.setFontSize(fontSize);
+    console.log(fontSize);
     this.load.on('complete', function () {
 
         progress.destroy();
@@ -71,8 +87,7 @@ function preload ()
 function create ()
 {
     
-    var sceneHeight = game.scale.height;
-    var sceneWidth = game.scale.width;
+    
     console.log(sceneHeight);
     console.log(sceneWidth);
     /*Button Code -Start*/
@@ -81,7 +96,7 @@ function create ()
     text.destroy();
     console.log('In Create');
     
-    this.cameras.main.setBounds(0, 0, fullWidth+9000, 600);
+    this.cameras.main.setBounds(0, 0, fullWidth+9000, sceneHeight);
     // this.add.image(0,0,'sky').setOrigin(0,0);
     
     // this.sound.pauseOnBlur = false;
@@ -92,12 +107,12 @@ function create ()
 
     //Sign boards -Start
     signboards = this.physics.add.staticGroup();
-    signboards.create(600,352,'city');
-    signboards.create(130,438,'sign');
-    signboards.create(1230,350,'doof');
-    signboards.create(2980,385,'college');
-    signboards.create(2400,352,'city');
-    signboards.create(1800,447,'mack');
+    signboards.create(600,sceneHeight-280,'city');
+    signboards.create(130,sceneHeight-210,'sign');
+    signboards.create(1230,sceneHeight-280,'doof');
+    signboards.create(2980,sceneHeight-250,'college');
+    signboards.create(2400,sceneHeight-280,'city');
+    signboards.create(1800,sceneHeight-188,'mack');
     
     
     
@@ -106,7 +121,7 @@ function create ()
     //Platforms
     platforms = this.physics.add.staticGroup();
     for(var i=100;i<20000;){
-        platforms.create(i, 610,'ground');
+        platforms.create(i, sceneHeight-25,'ground');
         i+=600;    
     }
     // platforms.create(100, 610,'ground');
@@ -132,7 +147,7 @@ function create ()
     })
 
     //Player
-    player = this.physics.add.sprite(250, 440,'kick');
+    player = this.physics.add.sprite(250,0,'kick');
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     
@@ -157,9 +172,9 @@ function create ()
         repeat: -1
     });
 
-    player.body.setGravityY(300);
+    player.body.setGravityY(600);
     this.physics.add.collider(player,platforms);
-    this.physics.world.setBounds(0, 0, fullWidth+10000, 700);
+    this.physics.world.setBounds(0, 0, fullWidth+10000, sceneHeight-95);
     this.cameras.main.startFollow(player, true, 1.0, 1.0);
 
     //Chugs
@@ -177,10 +192,8 @@ function create ()
     this.physics.add.collider(chugs, platforms);
     this.physics.add.overlap(player, chugs, collectChugs, null, this);
     
-    const helloButton = this.add.text(75, 560, 'Hello,\nPlease use <- and -> arrow keys to move!', { fill: '#ffffff',font:'36px'}).setFontStyle('bold');
-    if(sceneWidth<900){
-        helloButton.setFontSize('12px');
-    }
+    const helloButton = this.add.text(75, sceneHeight-70, 'Hello,\nPlease use arrow keys to move!', { fill: '#ffffff'}).setFontStyle('bold');
+    helloButton.setFontSize(fontSize);
     helloButton.setInteractive();
     helloButton.on('pointerdown', () => { openLinkedIn(); });
 
