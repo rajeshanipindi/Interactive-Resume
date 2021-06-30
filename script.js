@@ -30,8 +30,8 @@ var game = new Phaser.Game(config);
 var sceneHeight;
 var sceneWidth;
 var fontSize;
-var xMid;
-var yMid;
+leftBtnClick=false;
+rightBtnClick=false;
 
 function init(){
     
@@ -79,6 +79,7 @@ function preload ()
     this.load.image('college','assets/college_cartoon.png');
     this.load.image('left','assets/left_btn.png');
     this.load.image('right','assets/right_btn.png');
+    this.load.image('cloud','assets/cloud.png');
     this.load.spritesheet('kick','assets/kickspr_digital.png',{frameWidth:130, frameHeight:150});
     this.load.spritesheet('bird','assets/birdspr_min.png',{frameWidth:87, frameHeight:68});
     // this.load.audio('theme','assets/kick_theme.ogg');
@@ -103,20 +104,25 @@ function create ()
     // var music = this.sound.add('theme');
     // music.play();
 
-    // game.add.button(990,150,'linkedin',openLinkedIn, this);
-
-    //Sign boards -Start
-    signboards = this.physics.add.staticGroup();
-    signboards.create(600,sceneHeight-280,'city');
-    signboards.create(130,sceneHeight-210,'sign');
-    signboards.create(1230,sceneHeight-280,'doof');
-    signboards.create(2980,sceneHeight-250,'college');
-    signboards.create(2400,sceneHeight-280,'city');
-    signboards.create(1800,sceneHeight-188,'mack');
+    //Backdrop -Start
+    backdrop = this.physics.add.staticGroup();
+    backdrop.create(600,sceneHeight-280,'city');
+    backdrop.create(130,sceneHeight-210,'sign');
+    backdrop.create(1230,sceneHeight-280,'doof');
+    backdrop.create(2980,sceneHeight-250,'college');
+    backdrop.create(2400,sceneHeight-280,'city');
+    backdrop.create(1800,sceneHeight-188,'mack');
+    //Backdrop -End
     
     
     
-    //Sign boards -End
+    //Clouds
+    clouds = this.physics.add.staticGroup();
+    for(var i=0;i<20000;i+=1000){
+        clouds.create(i,sceneHeight-480,'cloud');
+        clouds.create(i+Phaser.Math.FloatBetween(300.0,700.0),sceneHeight-Phaser.Math.FloatBetween(480.0,600.0),'cloud');
+    }
+    
 
     //Platforms
     platforms = this.physics.add.staticGroup();
@@ -194,9 +200,6 @@ function create ()
     
     const helloButton = this.add.text(75, sceneHeight-70, 'Hello,\nPlease use arrow keys to move!', { fill: '#ffffff'}).setFontStyle('bold');
     helloButton.setFontSize(fontSize);
-    helloButton.setInteractive();
-    helloButton.on('pointerdown', () => { openLinkedIn(); });
-
     leftButton = this.add.image(sceneWidth-120,sceneHeight-50,'left');
     leftButton.setScrollFactor(0);
     leftButton.setInteractive();
@@ -205,14 +208,14 @@ function create ()
     rightButton.setInteractive();
 }
 
-leftBtnClick=false;
-rightBtnClick=false;
-
-
-
+var scalingFactor = 0;
+var flag = false;
+var time = 0;
+var breakPoint = false;
 function update ()
 {
     
+    cloudAnimation();
     console.log('In Update');
     flyingbird.setVelocityX(200);
     flyingbird.anims.play('bluebird',true);
@@ -250,11 +253,6 @@ function collectChugs (player, chug)
     chug.disableBody(true, true);
 }
 
-function openLinkedIn(){
-    var win = window.open('https://www.linkedin.com');
-    win.focus();
-}
-
 function moveLeft(){
     player.setVelocityX(-200);
     player.anims.play('left',15, true);
@@ -262,4 +260,31 @@ function moveLeft(){
 function moveRight(){
     player.setVelocityX(200);
     player.anims.play('right', 15, true);
+}
+
+function cloudAnimation(){
+    if(breakPoint == false){
+        time+=1;    
+    }
+    if(flag==false){
+        scalingFactor+=0.0001;
+        clouds.scaleXY(scalingFactor,scalingFactor);
+    }
+    if(time==30){
+        breakPoint =true;
+        flag=true;
+        scalingFactor=0;
+    }
+    if(flag==true){
+        scalingFactor-=0.0001;
+        clouds.scaleXY(scalingFactor,scalingFactor);
+    }
+    if(breakPoint == true){
+        time-=1;
+    }
+    if(time==0){
+        breakPoint=false;
+        flag=false;
+        scalingFactor=0;
+    }
 }
