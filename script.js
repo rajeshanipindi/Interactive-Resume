@@ -90,7 +90,14 @@ function preload ()
     this.load.image('seniorcollege','assets/college.png');
     this.load.image('experience','assets/experience.png');
     this.load.image('gec','assets/gec.png');
+    this.load.image('marks','assets/marksboard.png');
     this.load.image('skills','assets/skills.png');
+    this.load.image('skilltree','assets/skilltree.png');
+    this.load.image('cpp','assets/cpp.png');
+    this.load.image('html','assets/html.png');
+    this.load.image('css','assets/css.png');
+    this.load.image('js','assets/js.png');
+    this.load.image('blackpearl','assets/blackpearl.png');
     this.load.image('projects','assets/projects.png');
     this.load.image('profiles','assets/profiles.png');
     this.load.image('thankyou','assets/thankyou.png');
@@ -118,7 +125,7 @@ function create ()
     scoreText.setScrollFactor(0)
     console.log('In Create');
     
-    this.cameras.main.setBounds(0, 0, fullWidth+7000, sceneHeight);
+    this.cameras.main.setBounds(0, 0, fullWidth+10000, sceneHeight);
     // this.add.image(0,0,'sky').setOrigin(0,0);
     
     // this.sound.pauseOnBlur = false;
@@ -128,7 +135,7 @@ function create ()
      //Clouds
      clouds = this.physics.add.staticGroup();
      for(var i=0;i<20000;i+=1000){
-        if(i>=4750 && i<=6000) {
+        if(i>=4650 && i<=6000) {
             continue;
         }
         clouds.create(i,sceneHeight-480,'cloud');
@@ -149,11 +156,18 @@ function create ()
     backdrop.create(3700,sceneHeight-180,'tree1');
     backdrop.create(4100,sceneHeight-250,'college');
     backdrop.create(4300,sceneHeight-180,'tree1');
-    backdrop.create(4750,sceneHeight-230,'blackpanther');
-    backdrop.create(5000,sceneHeight-210,'experience');
-    backdrop.create(6000,sceneHeight-235,'gec');
+    backdrop.create(5100,sceneHeight-230,'blackpanther');
+    backdrop.create(5400,sceneHeight-210,'experience');
+    backdrop.create(6500,sceneHeight-235,'gec');
+    backdrop.create(4800,sceneHeight-290,'marks');
     // backdrop.create(5000,sceneHeight-230,'captain');
-    backdrop.create(1850,sceneHeight-188,'mack');
+    backdrop.create(1800,sceneHeight-188,'mack');
+    backdrop.create(7500,sceneHeight-210,'skills');
+    // backdrop.create(7800,sceneHeight-168,'cpp');
+    backdrop.create(7800,sceneHeight-268,'skilltree');
+    // backdrop.create(8100,sceneHeight-168,'css');
+    // backdrop.create(8250,sceneHeight-167,'js');
+    // backdrop.create(8700,sceneHeight-190,'blackpearl');
     // backdrop.create(3200,sceneHeight-210,'about');
     // backdrop.create(3500,sceneHeight-210,'experience');
     // backdrop.create(3800,sceneHeight-210,'skills');
@@ -223,7 +237,7 @@ function create ()
 
     player.body.setGravityY(300);
     this.physics.add.collider(player,platforms);
-    this.physics.world.setBounds(0, 0, fullWidth+7000, sceneHeight-95);
+    this.physics.world.setBounds(0, 0, fullWidth+10000, sceneHeight-95);
     this.cameras.main.startFollow(player, true, 1.0, 1.0);
 
     //Chugs
