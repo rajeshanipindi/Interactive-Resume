@@ -89,6 +89,7 @@ function preload ()
     this.load.image('tree2','assets/tree2.png');
     this.load.image('seniorcollege','assets/college.png');
     this.load.image('experience','assets/experience.png');
+    this.load.image('gec','assets/gec.png');
     this.load.image('skills','assets/skills.png');
     this.load.image('projects','assets/projects.png');
     this.load.image('profiles','assets/profiles.png');
@@ -101,7 +102,8 @@ function preload ()
     this.load.spritesheet('bird','assets/birdspr_min.png',{frameWidth:87, frameHeight:68});
     // this.load.audio('theme','assets/kick_theme.ogg');
 }
-
+var arrayIndex=0;
+var array=[];
 function create ()
 {
     
@@ -116,12 +118,22 @@ function create ()
     scoreText.setScrollFactor(0)
     console.log('In Create');
     
-    this.cameras.main.setBounds(0, 0, fullWidth+4000, sceneHeight);
+    this.cameras.main.setBounds(0, 0, fullWidth+7000, sceneHeight);
     // this.add.image(0,0,'sky').setOrigin(0,0);
     
     // this.sound.pauseOnBlur = false;
     // var music = this.sound.add('theme');
     // music.play();
+
+     //Clouds
+     clouds = this.physics.add.staticGroup();
+     for(var i=0;i<20000;i+=1000){
+        if(i>=4750 && i<=6000) {
+            continue;
+        }
+        clouds.create(i,sceneHeight-480,'cloud');
+         clouds.create(i+Phaser.Math.FloatBetween(300.0,700.0),sceneHeight-Phaser.Math.FloatBetween(480.0,600.0),'cloud');
+     }
 
     //Backdrop -Start
     backdrop = this.physics.add.staticGroup();
@@ -137,8 +149,10 @@ function create ()
     backdrop.create(3700,sceneHeight-180,'tree1');
     backdrop.create(4100,sceneHeight-250,'college');
     backdrop.create(4300,sceneHeight-180,'tree1');
-    backdrop.create(4500,sceneHeight-230,'blackpanther');
-    backdrop.create(4800,sceneHeight-230,'captain');
+    backdrop.create(4750,sceneHeight-230,'blackpanther');
+    backdrop.create(5000,sceneHeight-210,'experience');
+    backdrop.create(6000,sceneHeight-235,'gec');
+    // backdrop.create(5000,sceneHeight-230,'captain');
     backdrop.create(1850,sceneHeight-188,'mack');
     // backdrop.create(3200,sceneHeight-210,'about');
     // backdrop.create(3500,sceneHeight-210,'experience');
@@ -147,12 +161,7 @@ function create ()
     
     
     
-    //Clouds
-    clouds = this.physics.add.staticGroup();
-    for(var i=0;i<20000;i+=1000){
-        clouds.create(i,sceneHeight-480,'cloud');
-        clouds.create(i+Phaser.Math.FloatBetween(300.0,700.0),sceneHeight-Phaser.Math.FloatBetween(480.0,600.0),'cloud');
-    }
+   
     
 
     //Platforms
@@ -167,11 +176,14 @@ function create ()
     // platforms.create(1900, 610,'ground');
     // platforms.create(2500, 610,'ground');
     platforms.create(1020, 370, 'halfblock');
+    platforms.create(4500, 370, 'halfblock');
     // platforms.create(50, 250, 'bridge');
     // platforms.create(750, 220, 'bridge');
     // platforms.create(1200, 300, 'bridge');
     // platforms.create(2000, 500, 'bridge');
     
+
+    array=[1020,4500];
     
     //Bird
     flyingbird = this.physics.add.sprite(100,120,'bird');
@@ -211,15 +223,19 @@ function create ()
 
     player.body.setGravityY(300);
     this.physics.add.collider(player,platforms);
-    this.physics.world.setBounds(0, 0, fullWidth+4000, sceneHeight-95);
+    this.physics.world.setBounds(0, 0, fullWidth+7000, sceneHeight-95);
     this.cameras.main.startFollow(player, true, 1.0, 1.0);
 
     //Chugs
     chugs = this.physics.add.group({
         key: 'chug',
-        repeat: 100,
-        setXY: { x: 500, y: 0, stepX: 200 }
+        repeat: 0,
+        setXY: { x: array[arrayIndex++], y: 0}
     });
+    
+        
+
+    
     
     chugs.children.iterate(function (child) {
     
@@ -262,7 +278,7 @@ function update ()
     cursors = this.input.keyboard.createCursorKeys();
     if (cursors.left.isDown || leftBtnClick==true)
     {
-        player.setVelocityX(-200);
+        player.setVelocityX(-800);
         player.anims.play('left', true);
     }
     else if (cursors.right.isDown || rightBtnClick==true)
@@ -286,7 +302,16 @@ function update ()
 
 function collectChugs (player, chug)
 {
-    chug.disableBody(true, true);
+    
+    // chugs.setX(array[arrayIndex]);
+    // arrayIndex++;
+    // chug.disableBody(true, true);
+    // chugs.toggleVisible();
+    chugs.setX(array[arrayIndex]);
+    arrayIndex++;
+    // chugs.toggleVisible();
+    
+    
     score+=10;
     scoreText.setText('SCORE:'+ score);
 }
