@@ -7,13 +7,11 @@ body{
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    
 }
-.links > img {
+.links > a > img {
     width: 50px;
     height: 50px;
     margin-left: 10px;
     margin-right: 12px;
     margin-top: 5px;
-    
 }

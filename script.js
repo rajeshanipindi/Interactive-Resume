@@ -2,6 +2,9 @@ var fullWidth=window.innerWidth;
 var fullHeight=window.innerHeight;
 var midX=fullWidth/2;
 var midY=fullHeight/2;
+var costalBites = "http://www.rajesh9999.hostfree.pw/cb/";
+var bloodBank = "http://www.rajesh9999.hostfree.pw/bb/";
+var aspire2k17 = "https://adityatekkali.edu.in/aspire2k17/home.php";
 var config = {
     scale : {
         mode: Phaser.Scale.FIT,
@@ -35,20 +38,15 @@ rightBtnClick=false;
 upBtnClick=false;
 var score = 0 ;
 
-function init(){
-    
-    
-    console.log('In Init');
+function init(){    
+    // console.log('In Init');
     var progress = this.add.graphics();
-
     this.load.on('progress', function (value) {
-
         progress.clear();
         progress.fillStyle(0x1c0c40, 1);
         progress.fillRect(0, 270, 800 * value, 60);
 
     });
-    
     
     sceneHeight = game.scale.height;
     sceneWidth = game.scale.width;
@@ -61,16 +59,10 @@ function init(){
         progress.destroy();
 
     });
-    
-
 }
 function preload ()
 {
-    
-    console.log('In Preload');
-    // this.load.image('sky','assets/sky.png');
-    
-    
+    // console.log('In Preload');
     this.load.image('ground','assets/rock.png');
     this.load.image('chug','assets/chug.png');
     this.load.image('bridge','assets/platform.png');
@@ -93,39 +85,32 @@ function preload ()
     this.load.image('marks','assets/marksboard.png');
     this.load.image('skills','assets/skills.png');
     this.load.image('skilltree','assets/skilltree.png');
-    this.load.image('cpp','assets/cpp.png');
-    this.load.image('html','assets/html.png');
-    this.load.image('css','assets/css.png');
-    this.load.image('js','assets/js.png');
-    this.load.image('blackpearl','assets/blackpearl.png');
     this.load.image('projects','assets/projects.png');
-    this.load.image('profiles','assets/profiles.png');
     this.load.image('thankyou','assets/thankyou.png');
     this.load.image('halfblock','assets/halfblock.png');
     this.load.image('fullblock','assets/fullblock.png');
     this.load.image('blackpanther','assets/blackpanther.png');
-    this.load.image('captain','assets/captain.png');
+    this.load.image('robot','assets/robot.png');
+    this.load.image('cblogo','assets/cblogo.png');
+    this.load.image('bblogo','assets/bblogo.png');
+    this.load.image('aspirelogo','assets/aspirelogo.png');
     this.load.spritesheet('kick','assets/kickspr_digital.png',{frameWidth:130, frameHeight:150});
     this.load.spritesheet('bird','assets/birdspr_min.png',{frameWidth:87, frameHeight:68});
-    // this.load.audio('theme','assets/kick_theme.ogg');
 }
 var arrayIndex=0;
 var array=[];
 function create ()
 {
     
-    
     text.destroy();
     console.log(sceneHeight);
     console.log(sceneWidth);
-    /*Button Code -Start*/
-    /*Button Code - End*/
-
+    
     scoreText = this.add.text(20, 20, 'SCORE:0', { fill: '#ffffff', font: '36px' }).setFontStyle('bold');
     scoreText.setScrollFactor(0)
     console.log('In Create');
     
-    this.cameras.main.setBounds(0, 0, fullWidth+10000, sceneHeight);
+    this.cameras.main.setBounds(0, 0, fullWidth+8200, sceneHeight);
     // this.add.image(0,0,'sky').setOrigin(0,0);
     
     // this.sound.pauseOnBlur = false;
@@ -147,7 +132,6 @@ function create ()
     backdrop.create(600,sceneHeight-280,'city');
     backdrop.create(130,sceneHeight-210,'start');
     backdrop.create(1230,sceneHeight-280,'doof');
-    
     backdrop.create(2200,sceneHeight-210,'about');
     backdrop.create(2500,sceneHeight-200,'school');
     backdrop.create(2950,sceneHeight-180,'tree1');
@@ -160,23 +144,27 @@ function create ()
     backdrop.create(5400,sceneHeight-210,'experience');
     backdrop.create(6500,sceneHeight-235,'gec');
     backdrop.create(4800,sceneHeight-290,'marks');
-    // backdrop.create(5000,sceneHeight-230,'captain');
     backdrop.create(1800,sceneHeight-188,'mack');
     backdrop.create(7500,sceneHeight-210,'skills');
-    // backdrop.create(7800,sceneHeight-168,'cpp');
-    backdrop.create(7800,sceneHeight-268,'skilltree');
-    // backdrop.create(8100,sceneHeight-168,'css');
-    // backdrop.create(8250,sceneHeight-167,'js');
-    // backdrop.create(8700,sceneHeight-190,'blackpearl');
-    // backdrop.create(3200,sceneHeight-210,'about');
-    // backdrop.create(3500,sceneHeight-210,'experience');
-    // backdrop.create(3800,sceneHeight-210,'skills');
-    //Backdrop -End
-    
-    
-    
-   
-    
+    backdrop.create(7850,sceneHeight-268,'skilltree');
+    backdrop.create(8200,sceneHeight-210,'projects');
+    backdrop.create(8500,sceneHeight-210,'robot');
+    backdrop.create(8750,sceneHeight-210,'robot');
+    backdrop.create(9000,sceneHeight-210,'robot');
+    const project1 = this.add.image(8500, sceneHeight-190, 'cblogo');
+    project1.setInteractive();
+    project1.on('pointerdown', () => { var win = window.open(costalBites);
+                                        win.focus(); });
+    const project2 = this.add.image(8745, sceneHeight-190, 'bblogo');
+    project2.setInteractive();
+    project2.on('pointerdown', () => { var win = window.open(bloodBank);
+                                        win.focus(); });
+    const project3 = this.add.image(9000, sceneHeight-190, 'aspirelogo');
+    project3.setInteractive();
+    project3.on('pointerdown', () => { var win = window.open(aspire2k17);
+                                        win.focus(); });                                                            
+    backdrop.create(9300,sceneHeight-210,'thankyou');
+    //Backdrop - End
 
     //Platforms
     platforms = this.physics.add.staticGroup();
@@ -184,18 +172,9 @@ function create ()
         platforms.create(i, sceneHeight-25,'ground');
         i+=600;    
     }
-    // platforms.create(100, 610,'ground');
-    // platforms.create(700, 610,'ground');
-    // platforms.create(1300, 610,'ground');
-    // platforms.create(1900, 610,'ground');
-    // platforms.create(2500, 610,'ground');
-    platforms.create(1020, 370, 'halfblock');
-    platforms.create(4500, 370, 'halfblock');
-    // platforms.create(50, 250, 'bridge');
-    // platforms.create(750, 220, 'bridge');
-    // platforms.create(1200, 300, 'bridge');
-    // platforms.create(2000, 500, 'bridge');
     
+    platforms.create(1020, 370, 'halfblock');
+    platforms.create(4500, 370, 'halfblock');    
 
     array=[1020,4500];
     
@@ -237,7 +216,7 @@ function create ()
 
     player.body.setGravityY(300);
     this.physics.add.collider(player,platforms);
-    this.physics.world.setBounds(0, 0, fullWidth+10000, sceneHeight-95);
+    this.physics.world.setBounds(0, 0, fullWidth+8200, sceneHeight-95);
     this.cameras.main.startFollow(player, true, 1.0, 1.0);
 
     //Chugs
@@ -246,19 +225,12 @@ function create ()
         repeat: 0,
         setXY: { x: array[arrayIndex++], y: 0}
     });
-    
-        
 
-    
-    
     chugs.children.iterate(function (child) {
-    
         child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-    
     });
     this.physics.add.collider(chugs, platforms);
     this.physics.add.overlap(player, chugs, collectChugs, null, this);
-    
     const helloButton = this.add.text(75, sceneHeight-70, 'Hello,\nPlease use arrow keys to move!', { fill: '#ffffff'}).setFontStyle('bold');
     helloButton.setFontSize(fontSize);
     leftButton = this.add.image(sceneWidth-190,sceneHeight-45,'left');
@@ -292,12 +264,12 @@ function update ()
     cursors = this.input.keyboard.createCursorKeys();
     if (cursors.left.isDown || leftBtnClick==true)
     {
-        player.setVelocityX(-800);
+        player.setVelocityX(-700);
         player.anims.play('left', true);
     }
     else if (cursors.right.isDown || rightBtnClick==true)
     {
-        player.setVelocityX(800);
+        player.setVelocityX(700);
         player.anims.play('right', true);
     }
     else
@@ -324,20 +296,18 @@ function collectChugs (player, chug)
     chugs.setX(array[arrayIndex]);
     arrayIndex++;
     // chugs.toggleVisible();
-    
-    
     score+=10;
     scoreText.setText('SCORE:'+ score);
 }
 
-function moveLeft(){
-    player.setVelocityX(-200);
-    player.anims.play('left',15, true);
-}
-function moveRight(){
-    player.setVelocityX(200);
-    player.anims.play('right', 15, true);
-}
+// function moveLeft(){
+//     player.setVelocityX(-500);
+//     player.anims.play('left',15, true);
+// }
+// function moveRight(){
+//     player.setVelocityX(500);
+//     player.anims.play('right', 15, true);
+// }
 
 function cloudAnimation(){
     if(breakPoint == false){
