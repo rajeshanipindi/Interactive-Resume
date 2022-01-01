@@ -151,10 +151,6 @@ function create ()
     backdrop.create(8500,sceneHeight-210,'robot');
     backdrop.create(8750,sceneHeight-210,'robot');
     backdrop.create(9000,sceneHeight-210,'robot');
-<<<<<<< HEAD
-=======
-
->>>>>>> development
     const project1 = this.add.image(8500, sceneHeight-190, 'cblogo');
     project1.setInteractive();
     project1.on('pointerdown', () => { var win = window.open(costalBites);
@@ -168,10 +164,6 @@ function create ()
     project3.on('pointerdown', () => { var win = window.open(aspire2k17);
                                         win.focus(); });                                                            
     backdrop.create(9300,sceneHeight-210,'thankyou');
-<<<<<<< HEAD
-=======
-
->>>>>>> development
     //Backdrop - End
 
     //Platforms
